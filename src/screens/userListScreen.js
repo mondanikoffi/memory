@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import {getUserList} from "../queries/queries";
+import {addUser, getUserList, updateUser} from "../queries/queries";
 import Table from "react-bootstrap/Table";
 import AppHeader from "../components/appHeader";
 import UserListItem from "../components/userListItem";
@@ -24,12 +24,18 @@ const UserListScreen = () => {
     const [totalPages, setTotalPages] = useState(1);
     const [active, setActive] = useState(1);
     const [modalShow, setModalShow] = useState(false);
+    const [user, setUser] = useState(null);
 
     //cette hook est appelé à chaque fois que le numéro courant (activePage) est changé
     // activePage est changé quand on clique sur la pagination (voir le composant Footer)
     useEffect(() => {
         //appel de la fonction qui fait la demandeà l'API
-        getUserList(active).then(result => {
+       UserList(active);
+
+    }, [active]);
+
+    const UserList = (page) => {
+        getUserList(page).then(result => {
             //met à jour la liste des users
             setUsers(result.data)
             //met à jour le nom de la compagnie
@@ -37,17 +43,44 @@ const UserListScreen = () => {
             //met à jour le nombre de page
             setTotalPages(result.total_pages)
         })
-    }, [active]);
+    };
 
     const handlePageChange = (index) => {
         setActive(index);
     }
 
     const handleUserChange = (inputs) => {
+        //on close le modal
+        setModalShow(false);
+        // si c'est un nouveau on fait on post
+        if (inputs.id === "") {
+            addUser(inputs).then(result => {
+                if (result.data.id !== undefined) {
+                    console.log(result.data)
+                }
+            })
+        } else {
+            //si c'Est un changement on fait un put
+            updateUser(inputs.id, inputs).then(result => {
+                if (result.data.updatedAt !== undefined) {
+                    console.log(result.data.updatedAt !== undefined)
+                }
+                UserList(active);
+            })
+        }
     }
 
-    const deleteUser = () => {
+    const handleChangeRequest = (user) => {
+        setUser(user);
+        setModalShow(true);
+    }
 
+    const handleShowRequest = (user) => {
+        setUser(user);
+    }
+
+    const handleDeleteRequest = (id) => {
+        console.log(id)
     }
 //ici on fait l'affichage
     //on donne le nom de la compagnie au composant AppHeader
@@ -62,7 +95,8 @@ const UserListScreen = () => {
             <AppHeader company={companyName}/>
             <div className="container">
                 <br/>
-                <div className="float-right"><Button variant ="success" onClick={() => setModalShow(true)}>Ajouter un utilisateur</Button></div>
+                <div className="float-right"><Button variant="success" onClick={() => {setUser(null); setModalShow(true)} }>Ajouter un
+                    utilisateur</Button></div>
                 <br/><br/>
                 <Table striped bordered hover size="sm">
                     <thead>
@@ -74,12 +108,14 @@ const UserListScreen = () => {
                     </tr>
                     </thead>
                     <tbody>{users.map((user) =>
-                        <UserListItem data={user}/>
+                        <UserListItem data={user} onChange={handleChangeRequest} onShow={handleShowRequest}
+                                      onDelete={handleDeleteRequest}/>
                     )}</tbody>
                 </Table>
-                <Footer active={active} totalPages={totalPages} changeHandler = {handlePageChange}/>
+                <Footer active={active} totalPages={totalPages} changeHandler={handlePageChange}/>
             </div>
-            <UserModal show={modalShow} onHide={() => setModalShow(false)} onSend={handleUserChange}/>
+            <UserModal show={modalShow} onHide={() => setModalShow(false)} onSend={handleUserChange}
+                       user={user}/>
         </div>
     );
 }
