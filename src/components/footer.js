@@ -11,15 +11,20 @@ const Footer = (props) => {
     let items = [];
     for (let number = 1; number <= props.totalPages; number++) {
         items.push(
-            <Pagination.Item key={number} active={number === active}>
+            <Pagination.Item key={number} active={number === active} onClick={()=>{console.log("nyemo");}}>
                 {number}
             </Pagination.Item>,
         );
     }
     return (
-        <div className="container">
-            <Pagination>{items}</Pagination>
+        <div style={pStyle}>
+            <Pagination style={pStyle} >{items}</Pagination>
         </div>
     )
 }
+
+const pStyle = {
+    fontSize: '15px',
+    textAlign: 'center'
+};
 export default Footer

@@ -5,6 +5,7 @@ import Table from "react-bootstrap/Table";
 import AppHeader from "../components/appHeader";
 import UserListItem from "../components/userListItem";
 import Footer from "../components/footer";
+import {Button} from "react-bootstrap";
 
 //UserListScreen est le screen d'affichage de la liste
 // au debut il va chercher les info au niveau de l'API
@@ -45,21 +46,26 @@ const UserListScreen = () => {
         <div>
             <AppHeader company={companyName}/>
             <div className="container">
+                <br/>
+                <div className="float-right"><Button variant ="success">Ajouter un utilisateur</Button></div>
+                <br/><br/>
                 <Table striped bordered hover size="sm">
                     <thead>
                     <tr>
-                        <th>image</th>
+                        <th></th>
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Email</th>
+                        <th colSpan={3}>Actions</th>
                     </tr>
                     </thead>
                     <tbody>{users.map((user) =>
                         <UserListItem data={user}/>
                     )}</tbody>
                 </Table>
+                <Footer active={activePage} totalPages={totalPages}/>
             </div>
-            <Footer active={activePage} totalPages={totalPages}/>
+
         </div>
     );
 }
