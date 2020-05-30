@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import {addUser, getUserList, updateUser} from "../queries/queries";
+import {addUser, deleteUser, getUserList, updateUser} from "../queries/queries";
 import Table from "react-bootstrap/Table";
 import AppHeader from "../components/appHeader";
 import UserListItem from "../components/userListItem";
@@ -80,7 +80,9 @@ const UserListScreen = () => {
     }
 
     const handleDeleteRequest = (id) => {
-        console.log(id)
+        deleteUser().then(result => {
+            UserList(active);
+        })
     }
 //ici on fait l'affichage
     //on donne le nom de la compagnie au composant AppHeader

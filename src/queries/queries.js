@@ -39,3 +39,12 @@ export function updateUser(id, data) {
         })
 }
 
+export function deleteUser(id) {
+    return axios.delete(host + "users/" + id)
+        .then(response => {
+            return response
+        })
+        .catch(error => {
+            console.log(error);
+        })
+}
