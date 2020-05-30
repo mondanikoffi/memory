@@ -11,7 +11,7 @@ const Footer = (props) => {
     let items = [];
     for (let number = 1; number <= props.totalPages; number++) {
         items.push(
-            <Pagination.Item key={number} active={number === active} onClick={()=>{console.log("nyemo");}}>
+            <Pagination.Item key={number} active={number === active} onClick={()=>{props.changeHandler(number);}}>
                 {number}
             </Pagination.Item>,
         );

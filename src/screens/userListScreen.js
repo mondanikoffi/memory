@@ -21,12 +21,13 @@ const UserListScreen = () => {
     const [users, setUsers] = useState([]);
     const [companyName, setCompanyName] = useState("");
     const [totalPages, setTotalPages] = useState(1);
-    let activePage = 1
+    const [active, setActive] = useState(1);
+
     //cette hook est appelé à chaque fois que le numéro courant (activePage) est changé
     // activePage est changé quand on clique sur la pagination (voir le composant Footer)
     useEffect(() => {
         //appel de la fonction qui fait la demandeà l'API
-        getUserList(activePage).then(result => {
+        getUserList(active).then(result => {
             //met à jour la liste des users
             setUsers(result.data)
             //met à jour le nom de la compagnie
@@ -34,7 +35,11 @@ const UserListScreen = () => {
             //met à jour le nombre de page
             setTotalPages(result.total_pages)
         })
-    }, [activePage]);
+    }, [active]);
+
+    const handlePageChange = (index) => {
+        setActive(index);
+    }
 //ici on fait l'affichage
     //on donne le nom de la compagnie au composant AppHeader
     //on affiche la liste dans un tableau
@@ -63,7 +68,7 @@ const UserListScreen = () => {
                         <UserListItem data={user}/>
                     )}</tbody>
                 </Table>
-                <Footer active={activePage} totalPages={totalPages}/>
+                <Footer active={active} totalPages={totalPages} changeHandler = {handlePageChange}/>
             </div>
 
         </div>
