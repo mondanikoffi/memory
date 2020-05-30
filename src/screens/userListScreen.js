@@ -6,6 +6,7 @@ import AppHeader from "../components/appHeader";
 import UserListItem from "../components/userListItem";
 import Footer from "../components/footer";
 import {Button} from "react-bootstrap";
+import UserModal from "../components/userModal";
 
 //UserListScreen est le screen d'affichage de la liste
 // au debut il va chercher les info au niveau de l'API
@@ -22,6 +23,7 @@ const UserListScreen = () => {
     const [companyName, setCompanyName] = useState("");
     const [totalPages, setTotalPages] = useState(1);
     const [active, setActive] = useState(1);
+    const [modalShow, setModalShow] = useState(false);
 
     //cette hook est appelé à chaque fois que le numéro courant (activePage) est changé
     // activePage est changé quand on clique sur la pagination (voir le composant Footer)
@@ -40,6 +42,13 @@ const UserListScreen = () => {
     const handlePageChange = (index) => {
         setActive(index);
     }
+
+    const handleUserChange = (inputs) => {
+    }
+
+    const deleteUser = () => {
+
+    }
 //ici on fait l'affichage
     //on donne le nom de la compagnie au composant AppHeader
     //on affiche la liste dans un tableau
@@ -47,12 +56,13 @@ const UserListScreen = () => {
     //users.map est la fonction d'iteration sur le tableau des users
     //a chaque iteration on donne l'item au composant UserListItem qui s'occupe de l'affichage
     //a la fin on appelle le Footer et on lui donne la page actuelle et le nombre de pages
+
     return (
         <div>
             <AppHeader company={companyName}/>
             <div className="container">
                 <br/>
-                <div className="float-right"><Button variant ="success">Ajouter un utilisateur</Button></div>
+                <div className="float-right"><Button variant ="success" onClick={() => setModalShow(true)}>Ajouter un utilisateur</Button></div>
                 <br/><br/>
                 <Table striped bordered hover size="sm">
                     <thead>
@@ -60,7 +70,6 @@ const UserListScreen = () => {
                         <th></th>
                         <th>First Name</th>
                         <th>Last Name</th>
-                        <th>Email</th>
                         <th colSpan={3}>Actions</th>
                     </tr>
                     </thead>
@@ -70,7 +79,7 @@ const UserListScreen = () => {
                 </Table>
                 <Footer active={active} totalPages={totalPages} changeHandler = {handlePageChange}/>
             </div>
-
+            <UserModal show={modalShow} onHide={() => setModalShow(false)} onSend={handleUserChange}/>
         </div>
     );
 }

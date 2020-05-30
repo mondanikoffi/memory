@@ -12,7 +12,6 @@ const UserListItem = (props) => {
             <td><Image src={user.avatar} rounded /></td>
             <td className="align-middle">{user.first_name}</td>
             <td className="align-middle">{user.last_name}</td>
-            <td>{user.email}</td>
             <td className="align-middle"><Button variant="secondary">Detail</Button></td>
             <td className="align-middle"><Button variant="warning">Modifier</Button></td>
             <td className="align-middle"><Button variant="danger">Supprimer</Button></td>
