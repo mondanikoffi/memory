@@ -7,6 +7,7 @@ import UserListItem from "../components/userListItem";
 import Footer from "../components/footer";
 import {Button} from "react-bootstrap";
 import UserModal from "../components/userModal";
+import UserDetails from "../components/userDetails";
 
 //UserListScreen est le screen d'affichage de la liste
 // au debut il va chercher les info au niveau de l'API
@@ -24,12 +25,13 @@ const UserListScreen = () => {
     const [totalPages, setTotalPages] = useState(1);
     const [active, setActive] = useState(1);
     const [modalShow, setModalShow] = useState(false);
+    const [modal, setModal] = useState(false);
     const [user, setUser] = useState(null);
 
     //cette hook est appelé à chaque fois que le numéro courant (activePage) est changé
     // activePage est changé quand on clique sur la pagination (voir le composant Footer)
     useEffect(() => {
-        //appel de la fonction qui fait la demandeà l'API
+        //appel de la fonction qui fait la demandeà l'AP
        UserList(active);
 
     }, [active]);
@@ -77,6 +79,7 @@ const UserListScreen = () => {
 
     const handleShowRequest = (user) => {
         setUser(user);
+        setModal(true);
     }
 
     const handleDeleteRequest = (id) => {
@@ -118,6 +121,7 @@ const UserListScreen = () => {
             </div>
             <UserModal show={modalShow} onHide={() => setModalShow(false)} onSend={handleUserChange}
                        user={user}/>
+            <UserDetails show={modal} onHide={() => setModal(false)} user={user}/>
         </div>
     );
 }
